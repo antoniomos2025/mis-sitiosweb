@@ -274,6 +274,9 @@ $(document).ready(function () {
   $('#institucion').on('change', actualizarTabla);
   $('#reset').on('click', function () {
     $('#delito, #factor, #institucion').val('');
+	$("#searchBox").val("");
+	tabla.search("").draw();
+	  
     filtrarFactores('');
     filtrarInstituciones('');
     actualizarTabla();
@@ -282,6 +285,8 @@ $(document).ready(function () {
   $('#searchBox').on('keyup', function () {
     tabla.search(this.value).draw();
   });
+
+	$(".dataTables_filter").hide();
 });
 </script>
 </body>
