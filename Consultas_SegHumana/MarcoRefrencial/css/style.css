@@ -1,0 +1,92 @@
+/* Estilos generales del cuerpo */
+body {
+    padding: 1.5rem;
+    background-color: #f8f9fa; /* Un color de fondo suave */
+}
+
+/* Estilos para los formularios select y control */
+.form-select, .form-control {
+    margin-bottom: 1rem;
+}
+
+/* Ocultar el filtro nativo de DataTables para usar el nuestro */
+.dataTables_wrapper .dataTables_filter {
+    display: none;
+}
+
+/* Estilos de la tabla DataTables */
+table.dataTable th, table.dataTable td {
+    vertical-align: top; /* Alinear el contenido en la parte superior de la celda */
+    word-wrap: break-word; /* Permite que las palabras largas se rompan y pasen a la siguiente línea */
+}
+
+/* Forzar que la tabla ocupe el 100% del ancho */
+table {
+    width: 100% !important;
+    table-layout: fixed; /* Ayuda a que el ancho de las columnas sea más predecible */
+}
+
+/* Estilos específicos para el formato de "Oferta" y "Normativas" (reutilizado para Descripción y Ámbito) */
+.oferta-format {
+    white-space: normal; /* Asegura que el texto se ajuste a la celda */
+    font-size: 0.95em; /* Un poco más pequeño para acomodar el texto */
+    line-height: 1.4; /* Espaciado de línea para mejor legibilidad */
+}
+
+/* Estilos para el texto truncado en la tabla */
+.oferta-truncada {
+    max-height: 4.2em; /* Aproximadamente 3 líneas de texto (1.4 * 3) */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Opcional: mostrar puntos suspensivos si el texto se desborda */
+    position: relative;
+    padding-right: 20px; /* Espacio para el botón "Ver más" */
+}
+
+.oferta-truncada .ver-mas {
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+    background-color: white; /* Para que el enlace no se "mezcle" con el texto */
+    padding-left: 5px;
+    font-weight: bold;
+}
+
+/* Estilos para los badges de filtros activos */
+#active-filters-badges .badge {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.5em 0.75em;
+    font-size: 0.85em;
+}
+
+/* Ajustes de ancho para columnas específicas si es necesario */
+/* Se ajustan los anchos para esta tabla específica */
+#tabla-datos th:nth-child(1) { width: 20%; } /* Marco referencial */
+#tabla-datos th:nth-child(2) { width: 25%; } /* Instrumento */
+#tabla-datos th:nth-child(3) { width: 35%; } /* Descripción */
+#tabla-datos th:nth-child(4) { width: 20%; } /* Ámbito de aplicación */
+
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    .form-select, .form-control {
+        margin-bottom: 0.75rem;
+    }
+    /* Reducir padding en tarjetas en móviles */
+    .card.p-4 {
+        padding: 1.5rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Ajustes adicionales para pantallas muy pequeñas */
+    #tabla-datos th, #tabla-datos td {
+        font-size: 0.8em; /* Reducir tamaño de fuente en tablas */
+    }
+    .oferta-truncada {
+        max-height: 3.5em; /* Ajustar altura para truncar en móviles */
+    }
+}
