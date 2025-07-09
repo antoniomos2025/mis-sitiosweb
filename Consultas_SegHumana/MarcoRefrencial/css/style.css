@@ -1,6 +1,6 @@
 /* Estilos generales del cuerpo */
 body {
-    padding: 1.5rem;
+    padding: 1.1rem;
     background-color: #f8f9fa; /* Un color de fondo suave */
 }
 
@@ -23,7 +23,7 @@ table.dataTable th, table.dataTable td {
 /* Forzar que la tabla ocupe el 100% del ancho */
 table {
     width: 100% !important;
-    table-layout: fixed; /* Ayuda a que el ancho de las columnas sea más predecible */
+    /*    table-layout: fixed;  Ayuda a que el ancho de las columnas sea más predecible */
 }
 
 /* Estilos específicos para el formato de "Oferta" y "Normativas" (reutilizado para Descripción y Ámbito) */
@@ -35,11 +35,11 @@ table {
 
 /* Estilos para el texto truncado en la tabla */
 .oferta-truncada {
-    max-height: 4.2em; /* Aproximadamente 3 líneas de texto (1.4 * 3) */
+    /*max-height: 4.2em;  Aproximadamente 3 líneas de texto (1.4 * 3) */
     overflow: hidden;
     text-overflow: ellipsis; /* Opcional: mostrar puntos suspensivos si el texto se desborda */
     position: relative;
-    padding-right: 20px; /* Espacio para el botón "Ver más" */
+    padding-right: 10px; /* Espacio para el botón "Ver más" */
 }
 
 .oferta-truncada .ver-mas {
