@@ -44,10 +44,8 @@ table {
 }
 
 .oferta-truncada .ver-mas {
-    position0; : absolute;
-    bottom: /*
     right: 5px;
-    ckground-color: white; /* Para que el enlace no se "mezcle" con el texto */
+    background-color: white; /* Para que el enlace no se "mezcle" con el texto */
     padding-left: 5px;
     font-weight: bold;
 }
