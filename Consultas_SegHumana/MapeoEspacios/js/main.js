@@ -70,7 +70,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 function cargarOpciones(dataToProcess) {
     const delitos = [...new Set(dataToProcess.map(item => item.Delito))];
     const delitoSelect = $('#delito');
-    delitoSelect.empty().append('<option value="">Seleccione un Delito</option>');
+    delitoSelect.empty().append('<option value="">Seleccione un delito</option>');
     delitos.sort().forEach(delito => {
         delitoSelect.append(`<option value="${delito}">${delito}</option>`);
     });
@@ -79,7 +79,7 @@ function cargarOpciones(dataToProcess) {
 // Función para filtrar factores de riesgo basados en el delito seleccionado
 function filtrarFactores(delitoSeleccionado, dataToProcess) {
     const factorSelect = $('#factor');
-    factorSelect.empty().append('<option value="">Seleccione un Factor de Riesgo</option>');
+    factorSelect.empty().append('<option value="">Seleccione un factor de riesgo</option>');
 
     let factores = [];
     if (delitoSeleccionado) {
@@ -98,7 +98,7 @@ function filtrarFactores(delitoSeleccionado, dataToProcess) {
 // Función para filtrar instanciaes basadas en el factor de riesgo seleccionado
 function filtrarinstanciaes(factorSeleccionado, dataToProcess) {
     const instanciaSelect = $('#instancia');
-    instanciaSelect.empty().append('<option value="">Seleccione una Institución</option>');
+    instanciaSelect.empty().append('<option value="">Seleccione una instancia</option>');
 
     let instanciaes = [];
     if (factorSeleccionado) {
@@ -149,10 +149,10 @@ function actualizarTablaYFiltros() {
 		pageLength: 20
 		,
         data: filteredData.map(d => [
-            d.Delito,
-            `<div class='oferta-format'>${d.Factor.replace(/\n/g, '<br>')}</div>`,
             d.instancia,
-            `<div class='oferta-format oferta-truncada' data-fulltext="${d.Nivel}">${d.Nivel.substring(0, 850).replace(/\n/g, '<br>')} </div>`,
+			`<div class='oferta-format oferta-truncada' data-fulltext="${d.Nivel}">${d.Nivel.substring(0, 850).replace(/\n/g, '<br>')} </div>`,
+			d.Delito,
+            `<div class='oferta-format'>${d.Factor.replace(/\n/g, '<br>')}</div>`,
             `<div class='oferta-format oferta-truncada' data-fulltext="${d.Competencia}">${d.Competencia.substring(0, 450).replace(/\n/g, '<br>')} </div>`
         ])
     });
