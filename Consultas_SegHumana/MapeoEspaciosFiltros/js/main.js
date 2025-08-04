@@ -81,10 +81,10 @@ function filtrarInstancia(dataToProcess) {
 	debugger;
 	
     const instanciaSelect = $('#instancia');
-    instanciaSelect.empty().append('<option value="">Seleccione una instancia de riesgo</option>');
+    instanciaSelect.empty().append('<option value="">Seleccione un factor de riesgo</option>');
 
     let instancias = [];
-	instancias = [...new Set(dataToProcess.map(item => item.Instancia))];
+	instancias = [...new Set(dataToProcess.map(item => item.Factor))];
 	
     // if (delitoSeleccionado) {
         // instancias = [...new Set(dataToProcess
@@ -108,7 +108,7 @@ function filtrarNivel(instanciaSeleccionado, dataToProcess) {
     let Instanciaes = [];
     if (instanciaSeleccionado) {
         Instanciaes = [...new Set(dataToProcess
-            .filter(item => item.Instancia === instanciaSeleccionado)
+            .filter(item => item.Factor === instanciaSeleccionado)
             .map(item => item.Nivel)
         )];
     } else {
@@ -154,7 +154,7 @@ function actualizarTablaYFiltros() {
 
     // Filtra la data original con los selectores
     let filteredData = originalData.filter(d => {
-        return (instancia === '' || d.Instancia === instancia) &&
+        return (instancia === '' || d.Factor === instancia) &&
                (nivel === '' || d.Nivel === nivel) &&
 			   (delito === '' || d.Delito === delito);
     });
@@ -200,7 +200,7 @@ function actualizarFiltrosActivos(delito, instancia, nivel) {
 
    
     if (instancia) {
-        badgesContainer.append(`<span class="badge bg-info text-dark me-2">Instancia de articulación: ${instancia}</span>`);
+        badgesContainer.append(`<span class="badge bg-info text-dark me-2">Factor de riesgo: ${instancia}</span>`);
     }
     if (nivel) {
         badgesContainer.append(`<span class="badge bg-success me-2">Nivel territorial: ${nivel}</span>`);

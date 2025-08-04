@@ -154,7 +154,7 @@ function actualizarTablaYFiltros() {
             d.Delito,
 			`<div class='oferta-format'>${d.Factor.replace(/\n/g, '<br>')}</div>`,    
 			`<a href="${enlace}" target="_blank">${d.Institucion}</a>`,					
-			`<div class='oferta-format oferta-truncada' data-fulltext="${d.Descripcion}">${d.Descripcion.substring(0, 5000).replace(/\n/g, '<br>')} </div>`,		
+			`<div class='oferta-format oferta-truncada' data-fulltext="${d.Descripcion}">${d.Descripcion.substring(0, 1000).replace(/\n/g, '<br>')} </div>`,		
 		    `<div class='oferta-format oferta-truncada' data-fulltext="${d.Responsable}">${d.Responsable.substring(0, 850).replace(/\n/g, '<br>')} </div>`,
 			// `<div class='oferta-format oferta-truncada' data-fulltext="${d.Lanzamiento}">${d.Lanzamiento.substring(0, 850).replace(/\n/g, '<br>')} </div>`,
 			
