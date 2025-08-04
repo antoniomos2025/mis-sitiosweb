@@ -98,7 +98,7 @@ function filtrarFactores(delitoSeleccionado, dataToProcess) {
 // Función para filtrar Instituciones basadas en el factor de riesgo seleccionado
 function filtrarInstituciones(factorSeleccionado, dataToProcess) {
     const InstitucionSelect = $('#Institucion');
-    InstitucionSelect.empty().append('<option value="">Seleccione una institucion</option>');
+    InstitucionSelect.empty().append('<option value="">Seleccione un actor</option>');
 
     let Instituciones = [];
     if (factorSeleccionado) {
