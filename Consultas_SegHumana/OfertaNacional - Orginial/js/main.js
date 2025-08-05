@@ -46,9 +46,10 @@ $.extend( true, $.fn.dataTable.defaults, {
         "buttons": {
             "create": "Nuevo",
             "edit": "Cambiar",
-            "remove": "Borrar",            
+            "remove": "Borrar",
+            "copy": "Copiar",
             "csv": "fichero CSV",
-            "excel": "Exportar a Excel",
+            "excel": "tabla Excel",
             "pdf": "documento PDF",
             "print": "Imprimir",
             "colvis": "Visibilidad columnas",
@@ -65,34 +66,109 @@ $.extend( true, $.fn.dataTable.defaults, {
     }           
 } );
 
-// Pobla selects únicos
-function populateSelect(selector, field, data) {
-    const select = $(selector);
-    select.empty().append('<option value="">Todos</option>');
-    [...new Set(data.map(d => d[field]).filter(Boolean))].sort()
-        .forEach(val => select.append(`<option value="${val}">${val}</option>`));
+// Función para cargar opciones en los selectores
+function cargarOpciones(dataToProcess) {
+    const delitos = [...new Set(dataToProcess.map(item => item.Delito))];
+    const delitoSelect = $('#delito');
+    delitoSelect.empty().append('<option value="">Seleccione un Delito</option>');
+    delitos.sort().forEach(delito => {
+        delitoSelect.append(`<option value="${delito}">${delito}</option>`);
+    });
 }
 
-function applyFilters() {
-    let delito = $('#delito').val();
-    let factor = $('#factor').val();
-    let institucion = $('#institucion').val();
-    let tipo = $('#tipo').val();
-    let nivel = $('#nivel').val();
-    let filtered = originalData.filter(d =>
-        (!delito || d.Delito === delito) &&
-        (!factor || d.Factor === factor) &&
-        (!institucion || d.Institucion === institucion) &&
-        (!tipo || d.Tipo === tipo) &&
-        (!nivel || d.Nivel === nivel)
-    );
-    tabla.clear().rows.add(filtered).draw();
-	
-	 actualizarFiltrosActivos(delito, factor, institucion, tipo, nivel);
+// Función para filtrar factores de riesgo basados en el delito seleccionado
+function filtrarFactores(delitoSeleccionado, dataToProcess) {
+    const factorSelect = $('#factor');
+    factorSelect.empty().append('<option value="">Seleccione un Factor de Riesgo</option>');
+
+    let factores = [];
+    if (delitoSeleccionado) {
+        factores = [...new Set(dataToProcess
+            .filter(item => item.Delito === delitoSeleccionado)
+            .map(item => item.Factor)
+        )];
+    } else {
+        factores = [...new Set(dataToProcess.map(item => item.Factor))];
+    }
+    factores.sort().forEach(factor => {
+        factorSelect.append(`<option value="${factor}">${factor}</option>`);
+    });
+}
+
+// Función para filtrar instituciones basadas en el factor de riesgo seleccionado
+function filtrarInstituciones(factorSeleccionado, dataToProcess) {
+    const institucionSelect = $('#institucion');
+    institucionSelect.empty().append('<option value="">Seleccione una Institución</option>');
+
+    let instituciones = [];
+    if (factorSeleccionado) {
+        instituciones = [...new Set(dataToProcess
+            .filter(item => item.Factor === factorSeleccionado)
+            .map(item => item.Institucion)
+        )];
+    } else {
+        instituciones = [...new Set(dataToProcess.map(item => item.Institucion))];
+    }
+    instituciones.sort().forEach(institucion => {
+        institucionSelect.append(`<option value="${institucion}">${institucion}</option>`);
+    });
+}
+
+// Función para actualizar la tabla y los badges de filtros activos
+function actualizarTablaYFiltros() {
+    const delito = $('#delito').val();
+    const factor = $('#factor').val();
+    const institucion = $('#institucion').val();
+
+    // Resetear DataTables para aplicar nuevos filtros desde el conjunto original
+    if (tabla) {
+        tabla.destroy(); // Destruye la instancia actual de DataTables
+    }
+
+    // Filtra la data original con los selectores
+    let filteredData = originalData.filter(d => {
+        return (delito === '' || d.Delito === delito) &&
+               (factor === '' || d.Factor === factor) &&
+               (institucion === '' || d.Institucion === institucion);
+    });
+
+    // Re-inicializa DataTables con la data filtrada
+    tabla = $('#tabla').DataTable({
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: 'Exportar a Excel',
+                className: 'btn btn-success'
+            }
+        ],
+        rowGroup: {
+            dataSrc: '0' // Agrupar por columna 0: Delito
+        },
+		pageLength: 10
+		,
+        data: filteredData.map(d => [
+            d.Institucion,
+			d.Delito,
+            `<div class='oferta-format'>${d.Factor.replace(/\n/g, '<br>')}</div>`,
+            `<div class='oferta-format oferta-truncada' data-fulltext="${d.Normativas}">${d.Normativas.substring(0, 850).replace(/\n/g, '<br>')} </div>`,
+            `<div class='oferta-format oferta-truncada' data-fulltext="${d.Oferta}">${d.Oferta.substring(0, 850).replace(/\n/g, '<br>')} </div>`,
+			d.Tipo,
+			d.Nivel
+        ])
+    });
+
+    // Sincronizar el campo de búsqueda global con la búsqueda de DataTables
+    $('#searchBox').off('keyup').on('keyup', function() {
+        tabla.search(this.value).draw();
+    });
+
+    actualizarFiltrosActivos(delito, factor, institucion);
 }
 
 // Función para actualizar los badges de filtros activos
-function actualizarFiltrosActivos(delito, factor, institucion, tipo, nivel) {
+function actualizarFiltrosActivos(delito, factor, institucion) {
     const badgesContainer = $('#active-filters-badges');
     badgesContainer.empty();
 
@@ -105,56 +181,65 @@ function actualizarFiltrosActivos(delito, factor, institucion, tipo, nivel) {
     if (institucion) {
         badgesContainer.append(`<span class="badge bg-success me-2">Institución: ${institucion}</span>`);
     }
-	if (tipo) {
-        badgesContainer.append(`<span class="badge bg-primary me-2">Tipo: ${tipo}</span>`);
-    }
-    if (nivel) {
-        badgesContainer.append(`<span class="badge bg-info text-dark me-2">Nivel: ${nivel}</span>`);
-    }
 }
 
-$(document).ready(async function() {
-    originalData = await fetchData();
-    tabla = $('#tabla').DataTable({
-        data: originalData,
-        columns: [
-            { data: 'Institucion' },
-            { data: 'Delito' },
-            { data: 'Factor' },
-            { data: 'Normativas' },
-            { data: 'Oferta' },
-            { data: 'Tipo' },
-            { data: 'Nivel' }
-        ],
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                text: 'Exportar a Excel',
-                className: 'btn btn-success'
-            }
-        ],
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-        }
+// Bloque principal de ejecución cuando el DOM está listo
+$(document).ready(async function () {
+    originalData = await fetchData(); // Cargar la data al inicio
+  
+
+
+    if (originalData.length > 0) {
+        cargarOpciones(originalData);
+        filtrarFactores('', originalData);
+        filtrarInstituciones('', originalData);
+        actualizarTablaYFiltros(); // Inicializar la tabla y filtros
+    } else {
+        $('#tabla tbody').html('<tr><td colspan="5" class="text-center">No se pudieron cargar los datos o no hay datos disponibles.</td></tr>');
+    }
+
+    // Eventos de cambio para los selectores de filtro
+    $('#delito').on('change', function () {
+        const v = $(this).val();
+        filtrarFactores(v, originalData);
+        filtrarInstituciones('', originalData); // Resetear instituciones si cambia delito
+        $('#factor').val(''); // Resetear factor
+        $('#institucion').val(''); // Resetear institucion
+        actualizarTablaYFiltros();
     });
 
-    populateSelect('#delito', 'Delito', originalData);
-    populateSelect('#factor', 'Factor', originalData);
-    populateSelect('#institucion', 'Institucion', originalData);
-    populateSelect('#tipo', 'Tipo', originalData);
-    populateSelect('#nivel', 'Nivel', originalData);
-
-    $('#delito, #factor, #institucion, #tipo, #nivel').on('change', function() {
-        applyFilters();
+    $('#factor').on('change', function () {
+        const v = $(this).val();
+        filtrarInstituciones(v, originalData);
+        $('#institucion').val(''); // Resetear institucion si cambia factor
+        actualizarTablaYFiltros();
     });
 
-    $('#reset').on('click', function() {
-        $('#delito, #factor, #institucion, #tipo, #nivel').val('');
-        applyFilters();
+    $('#institucion').on('change', function () {
+        actualizarTablaYFiltros();
     });
 
-    $('#searchBox').on('keyup', function() {
-        tabla.search(this.value).draw();
+    // Evento para el botón de Reiniciar
+    $('#reset').on('click', function () {
+        $('#delito').val('');
+        $('#factor').val('');
+        $('#institucion').val('');
+        cargarOpciones(originalData); // Recargar opciones principales
+        filtrarFactores('', originalData); // Recargar factores
+        filtrarInstituciones('', originalData); // Recargar instituciones
+        actualizarTablaYFiltros(); // Actualizar tabla sin filtros
     });
+
+    // Evento para el modal de "Ver más"
+    $('#tabla tbody').on('click', '.ver-mas', function(e) {
+        e.preventDefault();
+        const fullText = $(this).parent().data('fulltext');
+        const column = $(this).data('column');
+        $('#modalTitle').text(`Detalles de ${column}`);
+        $('#modalBody').html(fullText.replace(/\n/g, '<br>'));
+        var myModal = new bootstrap.Modal(document.getElementById('detailModal'));
+        myModal.show();
+    });
+	
+	
 });
