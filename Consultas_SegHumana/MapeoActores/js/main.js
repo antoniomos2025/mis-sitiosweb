@@ -70,16 +70,24 @@ $.extend( true, $.fn.dataTable.defaults, {
 function cargarOpciones(dataToProcess) {
     const delitos = [...new Set(dataToProcess.map(item => item.Delito))];
     const delitoSelect = $('#delito');
-    delitoSelect.empty().append('<option value="">Seleccione un delito</option>');
+    delitoSelect.empty().append('<option value="">Todos</option>');
     delitos.sort().forEach(delito => {
         delitoSelect.append(`<option value="${delito}">${delito}</option>`);
+    });
+
+    //Nivel territorial solicitado posterior
+    const niveles = [...new Set(dataToProcess.map(item => item.Nivel))];
+    const nivelSelect = $('#nivel');
+    nivelSelect.empty().append('<option value="">Todos</option>');
+    niveles.sort().forEach(nivel => {
+        nivelSelect.append(`<option value="${nivel}">${nivel}</option>`);
     });
 }
 
 // Función para filtrar factores de riesgo basados en el delito seleccionado
 function filtrarFactores(delitoSeleccionado, dataToProcess) {
     const factorSelect = $('#factor');
-    factorSelect.empty().append('<option value="">Seleccione un factor de riesgo</option>');
+    factorSelect.empty().append('<option value="">Todos</option>');
 
     let factores = [];
     if (delitoSeleccionado) {
@@ -98,7 +106,7 @@ function filtrarFactores(delitoSeleccionado, dataToProcess) {
 // Función para filtrar Instituciones basadas en el factor de riesgo seleccionado
 function filtrarInstituciones(factorSeleccionado, dataToProcess) {
     const InstitucionSelect = $('#Institucion');
-    InstitucionSelect.empty().append('<option value="">Seleccione un actor</option>');
+    InstitucionSelect.empty().append('<option value="">Todos</option>');
 
     let Instituciones = [];
     if (factorSeleccionado) {
@@ -119,6 +127,7 @@ function actualizarTablaYFiltros() {
     const delito = $('#delito').val();
     const factor = $('#factor').val();
     const Institucion = $('#Institucion').val();
+    const nivel = $('#nivel').val();
 
     // Resetear DataTables para aplicar nuevos filtros desde el conjunto original
     if (tabla) {
@@ -129,7 +138,8 @@ function actualizarTablaYFiltros() {
     let filteredData = originalData.filter(d => {
         return (delito === '' || d.Delito === delito) &&
                (factor === '' || d.Factor === factor) &&
-               (Institucion === '' || d.Institucion === Institucion);
+               (Institucion === '' || d.Institucion === Institucion) &&
+               (nivel === '' || d.Nivel === nivel);
     });
 
     // Re-inicializa DataTables con la data filtrada
@@ -165,11 +175,11 @@ function actualizarTablaYFiltros() {
         tabla.search(this.value).draw();
     });
 
-    actualizarFiltrosActivos(delito, factor, Institucion);
+    actualizarFiltrosActivos(delito, factor, Institucion, nivel);
 }
 
 // Función para actualizar los badges de filtros activos
-function actualizarFiltrosActivos(delito, factor, Institucion) {
+function actualizarFiltrosActivos(delito, factor, Institucion, nivel) {
     const badgesContainer = $('#active-filters-badges');
     badgesContainer.empty();
 
@@ -181,6 +191,9 @@ function actualizarFiltrosActivos(delito, factor, Institucion) {
     }
     if (Institucion) {
         badgesContainer.append(`<span class="badge bg-success me-2">Institución: ${Institucion}</span>`);
+    }
+    if (nivel) {
+        badgesContainer.append(`<span class="badge bg-primary me-2">Nivel territorial: ${nivel}</span>`);
     }
 }
 
@@ -220,11 +233,16 @@ $(document).ready(async function () {
         actualizarTablaYFiltros();
     });
 
+    $('#nivel').on('change', function () {
+        actualizarTablaYFiltros();
+    });
+
     // Evento para el botón de Reiniciar
     $('#reset').on('click', function () {
         $('#delito').val('');
         $('#factor').val('');
         $('#Institucion').val('');
+        $('#nivel').val('');
         cargarOpciones(originalData); // Recargar opciones principales
         filtrarFactores('', originalData); // Recargar factores
         filtrarInstituciones('', originalData); // Recargar Instituciones
