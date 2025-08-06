@@ -120,7 +120,17 @@ $(document).ready(async function() {
         columns: [
             { data: 'Institucion' },
             { data: 'Delito' },
-            { data: 'Factor' },
+			{ 
+			  data: 'Factor',
+				render: function(data, type, row) {
+				  if (row.EnlaceUrl && data) {
+					return `<a href="${row.EnlaceUrl}" target="_blank" rel="noopener">${data}</a>`;
+				  } else {
+					return data || '';
+				  }
+				}
+			},
+            // { data: 'Factor' },
             { data: 'Normativas' },
             { data: 'Oferta' },
             { data: 'Tipo' },
