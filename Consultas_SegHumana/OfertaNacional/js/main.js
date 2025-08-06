@@ -120,8 +120,9 @@ $(document).ready(async function() {
         columns: [
             { data: 'Institucion' },
             { data: 'Delito' },
-			{ 
-			  data: 'Factor',
+			{ data: 'Factor' },
+            { 
+			  data: 'Normativas',
 				render: function(data, type, row) {
 				  if (row.EnlaceUrl && data) {
 					return `<a href="${row.EnlaceUrl}" target="_blank" rel="noopener">${data}</a>`;
@@ -130,8 +131,7 @@ $(document).ready(async function() {
 				  }
 				}
 			},
-            // { data: 'Factor' },
-            { data: 'Normativas' },
+            // { data: 'Normativas' },
             { data: 'Oferta' },
             { data: 'Tipo' },
             { data: 'Nivel' }
