@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Consulta Buenas Prácticas — Vista Pro con columnas anchas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" rel="stylesheet" />
+  <link href="css/style_pro.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="container-fluid py-2">
+    <h1 class="mb-2 text-center">Consulta Buenas Prácticas Regionales</h1>
+
+    <section id="advanced-filters" class="mb-2 card p-3 shadow-sm bg-ghostwhite">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-2">
+          <label class="form-label" for="delito">Delito</label>
+          <select id="delito" class="form-select"></select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label" for="factor">Lugar</label>
+          <select id="factor" class="form-select"></select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="Institucion">Estrategia</label>
+          <select id="Institucion" class="form-select"></select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label" for="tipo">Tipo</label>
+          <select id="tipo" class="form-select"></select>
+        </div>
+        <div class="col-md-1">
+          <label class="form-label" for="nivel">Nivel</label>
+          <select id="nivel" class="form-select"></select>
+        </div>
+        <div class="col-md-2 d-grid">
+          <button id="reset" class="btn btn-outline-secondary">Limpiar filtros</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="results-table" class="card card-body shadow-sm">
+      <div class="d-flex gap-2 flex-wrap mb-2">
+        <input id="searchBox" class="form-control flex-grow-1" placeholder="Buscar en toda la tabla..." />
+        <div class="btn-group">
+          <button id="expandAll" class="btn btn-outline-primary btn-sm">Expandir todo</button>
+          <button id="collapseAll" class="btn btn-outline-secondary btn-sm">Contraer todo</button>
+        </div>
+      </div>
+
+      <!-- Contenedor con scroll horizontal SIEMPRE -->
+      <div class="table-container">
+        <table id="tabla" class="table table-striped table-hover w-100">
+          <thead class="table-dark">
+            <tr>
+              <th>Delito</th>
+              <th class="col-lugar">Lugar</th>
+              <th class="col-estrategia">Estrategia</th>
+              <th class="col-descripcion">Descripción</th>
+              <th>Responsable</th>
+              <th>Lanzamiento</th>
+              <th>Tipo</th>
+              <th>Nivel</th>
+              <th>Financiero</th>
+              <th>Técnico</th>
+              <th>Articulación</th>
+              <th>Confianza</th>
+              <th>Adaptabilidad</th>
+              <th>Evaluación</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <small class="text-muted">Sugerencia: usa el botón “Columnas” para ocultar/mostrar campos y personalizar la vista.</small>
+    </section>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+
+  <script>
+  // Dataset DEMO — reemplaza por tu API si corresponde
+  window._DATASET = [
+    {
+      "Delito":"Homicidio","Factor":"Bogotá","Institucion":"Estrategia Nacional contra el Homicidio (ENCOH)",
+      "Descripcion":"Acciones articuladas para reducir homicidios en áreas urbanas prioritarias. Este texto es largo para probar el salto de línea sin invadir columnas vecinas. Incluye detalles y ejemplos extensos para validar el alto dinámico de la fila.",
+      "Responsable":"MinDefensa","Lanzamiento":"2024","Tipo":"Control policial","Nivel":"Prevención primaria",
+      "Financiero":"Alto","Técnico":"Alto","Articulacion":"Alta","Confianza":"Media",
+      "Adaptabilidad":"Alta","Evaluacion":"En curso","EnlaceUrl":"https://www.mindefensa.gov.co/"
+    },
+    {
+      "Delito":"Violencia intrafamiliar","Factor":"Antioquia","Institucion":"Patrulla Púrpura",
+      "Descripcion":"Atención 24/7 a casos de violencia contra la mujer, activación de rutas y prevención. Texto adicional para observar el comportamiento con clamp y expansión individual.",
+      "Responsable":"Policía Nacional","Lanzamiento":"2023","Tipo":"Prevención social","Nivel":"Prevención secundaria",
+      "Financiero":"Medio","Técnico":"Medio","Articulacion":"Alta","Confianza":"Alta",
+      "Adaptabilidad":"Media","Evaluacion":"Consolidada","EnlaceUrl":"https://www.policia.gov.co/"
+    },
+    {
+      "Delito":"N/A","Factor":"Nacional","Institucion":"TerriData - DNP",
+      "Descripcion":"Repositorio de estadísticas territoriales con módulo de seguridad y convivencia. Párrafo extenso que puede crecer y, por defecto, se recorta a tres líneas para mantener la tabla compacta; el usuario puede expandir para ver todo el contenido sin que se rompa el layout.",
+      "Responsable":"DNP","Lanzamiento":"2022","Tipo":"Prevención social","Nivel":"Prevención primaria",
+      "Financiero":"Bajo","Técnico":"Alto","Articulacion":"Media","Confianza":"Alta",
+      "Adaptabilidad":"Alta","Evaluacion":"Publicada","EnlaceUrl":"https://terridata.dnp.gov.co/"
+    }
+  ];
+  </script>
+
+  <script src="js/main_pro.js"></script>
+</body>
+</html>

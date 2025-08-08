@@ -1,0 +1,66 @@
+/* Vista profesional para tablas anchas y contenido multilínea */
+body{background:#f8f9fa;}
+.bg-ghostwhite{background:ghostwhite;}
+.form-select,.form-control{margin-bottom:.25rem}
+
+.table-container{
+  overflow-x:auto;  /* Scroll horizontal siempre */
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #e0e5ec;
+  border-radius: .5rem;
+}
+
+.dataTables_wrapper .dataTables_filter{display:none}
+
+/* Layout fijo evita invasión entre columnas y respeta min-widths */
+#tabla{ table-layout: fixed; width:100%; }
+#tabla thead th{ white-space: nowrap; }
+#tabla td{
+  white-space: normal !important;    /* saltos de línea */
+  word-break: break-word;            /* romper palabras largas */
+  overflow-wrap: anywhere;           /* evitar superposición */
+  vertical-align: top;               /* contenido arriba */
+  line-height: 1.35;
+  padding-top: .6rem; padding-bottom: .6rem;
+}
+
+/* Anchos mínimos de columnas clave (ajusta según tu gusto) */
+.col-lugar{ min-width: 210px; }
+.col-estrategia{ min-width: 300px; }
+.col-descripcion{ min-width: 560px; }
+
+/* Otros mínimos razonables */
+#tabla th:nth-child(1), #tabla td:nth-child(1){ min-width: 160px; } /* Delito */
+#tabla th:nth-child(5), #tabla td:nth-child(5){ min-width: 220px; } /* Responsable */
+#tabla th:nth-child(6), #tabla td:nth-child(6){ min-width: 120px; text-align:center;} /* Lanzamiento */
+#tabla th:nth-child(7), #tabla td:nth-child(7){ min-width: 180px; } /* Tipo */
+#tabla th:nth-child(8), #tabla td:nth-child(8){ min-width: 180px; } /* Nivel */
+#tabla th:nth-child(9), #tabla td:nth-child(9){ min-width: 160px; } /* Financiero */
+#tabla th:nth-child(10), #tabla td:nth-child(10){ min-width: 160px; }/* Técnico */
+#tabla th:nth-child(11), #tabla td:nth-child(11){ min-width: 220px; }/* Articulación */
+#tabla th:nth-child(12), #tabla td:nth-child(12){ min-width: 200px; }/* Confianza */
+#tabla th:nth-child(13), #tabla td:nth-child(13){ min-width: 200px; }/* Adaptabilidad */
+#tabla th:nth-child(14), #tabla td:nth-child(14){ min-width: 160px; }/* Evaluación */
+
+.table-striped > tbody > tr:nth-of-type(odd){ background-color:#f1f4f8; }
+
+/* ---- Clamping (mostrar 3 líneas y permitir expandir) ---- */
+.clamp{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.clamp-3{ -webkit-line-clamp: 3; }     /* 3 líneas visibles */
+.clamp-unclamp{ -webkit-line-clamp: unset; }
+
+.toggle-clamp{
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: .85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link-cell a{ text-decoration: none; }
+.link-cell a:hover{ text-decoration: underline; }

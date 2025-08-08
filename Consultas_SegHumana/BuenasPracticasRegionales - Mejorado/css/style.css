@@ -7,7 +7,7 @@ body{ padding:1.1rem; background:#f8f9fa; }
 
 /* Tabla */
 table.dataTable th, table.dataTable td { vertical-align:top; word-wrap:break-word; }
-table { width:2200px !important; }
+table { width:3000px !important; }
 
 /* Control de anchos por prioridad (ajustables) */
 #tabla thead th:nth-child(1){ width:100px; }   /* Delito */

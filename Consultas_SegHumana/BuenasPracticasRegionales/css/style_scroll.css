@@ -1,0 +1,46 @@
+/* Scroll horizontal SIEMPRE y columnas legibles */
+body{background:#f8f9fa;}
+.bg-ghostwhite{background:ghostwhite;}
+.form-select,.form-control{margin-bottom:.25rem}
+
+.table-container{
+  overflow-x:auto;            /* Scroll horizontal siempre */
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #e0e5ec;
+  border-radius: .5rem;
+}
+
+/* DataTables: ocultar filtro nativo */
+.dataTables_wrapper .dataTables_filter{display:none}
+
+/* Tabla con layout fijo para respetar min-widths */
+#tabla{ table-layout: fixed; }
+#tabla thead th{ white-space: nowrap; }
+
+/* Anchos mínimos de columnas clave */
+#tabla th:nth-child(2), #tabla td:nth-child(2){ min-width: 200px; } /* Lugar */
+#tabla th:nth-child(3), #tabla td:nth-child(3){ min-width: 280px; } /* Estrategia */
+#tabla th:nth-child(4), #tabla td:nth-child(4){ min-width: 520px; } /* Descripción */
+
+/* Descripción multilínea, ruptura limpia */
+#tabla td:nth-child(4){
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+  font-size: .95rem;
+}
+
+/* Otros mínimos razonables */
+#tabla th:nth-child(1), #tabla td:nth-child(1){ min-width: 160px; } /* Delito */
+#tabla th:nth-child(5), #tabla td:nth-child(5){ min-width: 220px; } /* Responsable */
+#tabla th:nth-child(6), #tabla td:nth-child(6){ min-width: 120px; text-align:center;}
+#tabla th:nth-child(7), #tabla td:nth-child(7){ min-width: 180px; }
+#tabla th:nth-child(8), #tabla td:nth-child(8){ min-width: 180px; }
+#tabla th:nth-child(9), #tabla td:nth-child(9){ min-width: 160px; }
+#tabla th:nth-child(10), #tabla td:nth-child(10){ min-width: 160px; }
+#tabla th:nth-child(11), #tabla td:nth-child(11){ min-width: 220px; }
+#tabla th:nth-child(12), #tabla td:nth-child(12){ min-width: 200px; }
+#tabla th:nth-child(13), #tabla td:nth-child(13){ min-width: 200px; }
+#tabla th:nth-child(14), #tabla td:nth-child(14){ min-width: 160px; }
+
+.table-striped > tbody > tr:nth-of-type(odd){ background-color:#f1f4f8; }

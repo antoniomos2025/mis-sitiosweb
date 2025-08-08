@@ -1,0 +1,46 @@
+/* Scroll horizontal y celdas multilínea sin invadir columnas vecinas */
+body{background:#f8f9fa;}
+.bg-ghostwhite{background:ghostwhite;}
+.form-select,.form-control{margin-bottom:.25rem}
+
+.table-container{
+  overflow-x:auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #e0e5ec;
+  border-radius: .5rem;
+}
+
+/* DataTables */
+.dataTables_wrapper .dataTables_filter{display:none}
+
+/* Importante: layout fijo y celdas con wrap */
+#tabla{ table-layout: fixed; width:100%; }
+#tabla thead th{ white-space: nowrap; }
+#tabla td{
+  white-space: normal !important;     /* permitir salto de línea */
+  word-break: break-word;             /* romper palabras largas */
+  overflow-wrap: anywhere;            /* evitar superposición */
+  vertical-align: top;                /* alinear arriba */
+  line-height: 1.35;
+  padding-top: .6rem; padding-bottom: .6rem;
+}
+
+/* Anchos mínimos clave */
+#tabla th:nth-child(2), #tabla td:nth-child(2){ min-width: 200px; } /* Lugar */
+#tabla th:nth-child(3), #tabla td:nth-child(3){ min-width: 280px; } /* Estrategia */
+#tabla th:nth-child(4), #tabla td:nth-child(4){ min-width: 520px; } /* Descripción */
+#tabla th:nth-child(1), #tabla td:nth-child(1){ min-width: 160px; } /* Delito */
+
+/* Otros mínimos razonables */
+#tabla th:nth-child(5), #tabla td:nth-child(5){ min-width: 220px; } /* Responsable */
+#tabla th:nth-child(6), #tabla td:nth-child(6){ min-width: 120px; text-align:center;}
+#tabla th:nth-child(7), #tabla td:nth-child(7){ min-width: 180px; }
+#tabla th:nth-child(8), #tabla td:nth-child(8){ min-width: 180px; }
+#tabla th:nth-child(9), #tabla td:nth-child(9){ min-width: 160px; }
+#tabla th:nth-child(10), #tabla td:nth-child(10){ min-width: 160px; }
+#tabla th:nth-child(11), #tabla td:nth-child(11){ min-width: 220px; }
+#tabla th:nth-child(12), #tabla td:nth-child(12){ min-width: 200px; }
+#tabla th:nth-child(13), #tabla td:nth-child(13){ min-width: 200px; }
+#tabla th:nth-child(14), #tabla td:nth-child(14){ min-width: 160px; }
+
+.table-striped > tbody > tr:nth-of-type(odd){ background-color:#f1f4f8; }
