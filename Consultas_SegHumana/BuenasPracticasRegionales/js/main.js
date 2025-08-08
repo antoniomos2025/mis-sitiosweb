@@ -99,7 +99,33 @@ function applyFilters(){
         (!confianza || (r.Confianza || r['Confianza comunitaria']) === confianza)
     );
     tabla.clear().rows.add(filtered).draw();
+	
+	 actualizarFiltrosActivos(delito, factor, institucion, tipo, nivel);
 }
+
+
+// Función para actualizar los badges de filtros activos
+function actualizarFiltrosActivos(delito, factor, institucion, tipo, nivel) {
+    const badgesContainer = $('#active-filters-badges');
+    badgesContainer.empty();
+
+    if (delito) {
+        badgesContainer.append(`<span class="badge bg-primary me-2">Delito: ${delito}</span>`);
+    }
+    if (factor) {
+        badgesContainer.append(`<span class="badge bg-info text-dark me-2">Lugar: ${factor}</span>`);
+    }
+    if (institucion) {
+        badgesContainer.append(`<span class="badge bg-success me-2">Estrategia: ${institucion}</span>`);
+    }
+	if (tipo) {
+        badgesContainer.append(`<span class="badge bg-primary me-2">Tipo: ${tipo}</span>`);
+    }
+    if (nivel) {
+        badgesContainer.append(`<span class="badge bg-info text-dark me-2">Nivel: ${nivel}</span>`);
+    }
+}
+
 
 // Inicialización
 $(async function(){
