@@ -156,7 +156,7 @@ function actualizarTablaYFiltros() {
         rowGroup: {
             dataSrc: '0' // Agrupar por columna 0: Delito
         },
-		pageLength: 20
+		pageLength: 10
 		,
         data: filteredData.map(d => [
             `<div class='oferta-format oferta-truncada' data-fulltext="${d.Institucion}">${d.Institucion.substring(0, 850).replace(/\n/g, '<br>')} </div>`,			

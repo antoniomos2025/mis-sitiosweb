@@ -146,7 +146,7 @@ function actualizarTablaYFiltros() {
         rowGroup: {
             dataSrc: '0' // Agrupar por columna 0: Delito
         },
-		pageLength: 20
+		pageLength: 10
 		,
         data: filteredData.map(d => [
             d.instancia,

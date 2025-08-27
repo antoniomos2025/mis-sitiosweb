@@ -125,7 +125,7 @@ function actualizarTablaYFiltros() {
                 className: 'btn btn-success'
             }
         ],
-        pageLength: 20		
+        pageLength: 10		
         ,
         rowGroup: {
             dataSrc: '0' // Agrupar por columna 0: Marco normativo y público
